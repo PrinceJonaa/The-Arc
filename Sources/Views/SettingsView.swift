@@ -6,6 +6,7 @@ struct SettingsView: View {
   @AppStorage("hapticFeedback") private var hapticFeedback = true
 
   @Environment(\.modelContext) private var modelContext
+  @StateObject private var notifications = NotificationManager()
 
   @Query private var profiles: [UserProfile]
   @Query(sort: \DevotionAnchor.createdAt, order: .reverse)
@@ -23,6 +24,7 @@ struct SettingsView: View {
       List {
         myArcSection
         visionSection
+        notificationsSection
         appearanceSection
         feedbackSection
         dataSection
@@ -121,6 +123,37 @@ struct SettingsView: View {
           }
         }
       }
+    }
+  }
+
+  private var notificationsSection: some View {
+    Section("Reminders") {
+      Toggle(isOn: $notifications.morningEnabled) {
+        Label("Morning Flame", systemImage: "sunrise.fill")
+      }
+
+      if notifications.morningEnabled {
+        DatePicker(
+          "Time",
+          selection: $notifications.morningTime,
+          displayedComponents: .hourAndMinute
+        )
+      }
+
+      Toggle(isOn: $notifications.eveningEnabled) {
+        Label("Evening Reflection", systemImage: "moon.fill")
+      }
+
+      if notifications.eveningEnabled {
+        DatePicker(
+          "Time",
+          selection: $notifications.eveningTime,
+          displayedComponents: .hourAndMinute
+        )
+      }
+    }
+    .task {
+      await notifications.requestPermission()
     }
   }
 

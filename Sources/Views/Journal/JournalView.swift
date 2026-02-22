@@ -9,13 +9,25 @@ struct JournalView: View {
   @State private var showVoiceJournal = false
   @State private var mirrorPromptText: String?
   @State private var voicePromptText: String?
+  @State private var searchText = ""
+
+  /// Filtered entries based on search text.
+  private var filteredEntries: [JournalEntry] {
+    if searchText.isEmpty { return entries }
+    let query = searchText.lowercased()
+    return entries.filter {
+      $0.title.lowercased().contains(query)
+        || $0.body.lowercased().contains(query)
+        || $0.promptText.lowercased().contains(query)
+    }
+  }
 
   /// Group entries by month-year.
   private var groupedEntries: [(String, [JournalEntry])] {
     let formatter = DateFormatter()
     formatter.dateFormat = "MMMM yyyy"
 
-    let grouped = Dictionary(grouping: entries) { entry in
+    let grouped = Dictionary(grouping: filteredEntries) { entry in
       formatter.string(from: entry.date)
     }
 
@@ -39,9 +51,9 @@ struct JournalView: View {
         }
       }
       .navigationTitle("Journal")
+      .searchable(text: $searchText, prompt: "Search entries…")
       .toolbar {
         ToolbarItemGroup(placement: .topBarTrailing) {
-          // Voice entry
           Button {
             voicePromptText = nil
             showVoiceJournal = true
@@ -49,7 +61,6 @@ struct JournalView: View {
             Label("Voice Entry", systemImage: "mic.fill")
           }
 
-          // Written entry
           Button {
             mirrorPromptText = nil
             showCompose = true
@@ -87,26 +98,35 @@ struct JournalView: View {
   private var entryList: some View {
     ScrollView {
       LazyVStack(spacing: 16) {
-        // Weekly Mirror Prompt
-        MirrorPromptCard { prompt in
-          voicePromptText = prompt
-          showVoiceJournal = true
+        // Weekly Mirror Prompt (hide during search)
+        if searchText.isEmpty {
+          MirrorPromptCard { prompt in
+            voicePromptText = prompt
+            showVoiceJournal = true
+          }
         }
 
-        ForEach(groupedEntries, id: \.0) { month, monthEntries in
-          Section {
-            ForEach(monthEntries) { entry in
-              NavigationLink(value: entry) {
-                JournalEntryRow(entry: entry)
+        if filteredEntries.isEmpty {
+          Text("No entries matching \"\(searchText)\"")
+            .font(.subheadline)
+            .foregroundStyle(.tertiary)
+            .padding(.top, 40)
+        } else {
+          ForEach(groupedEntries, id: \.0) { month, monthEntries in
+            Section {
+              ForEach(monthEntries) { entry in
+                NavigationLink(value: entry) {
+                  JournalEntryRow(entry: entry)
+                }
+                .buttonStyle(.plain)
               }
-              .buttonStyle(.plain)
+            } header: {
+              Text(month)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 4)
             }
-          } header: {
-            Text(month)
-              .font(.subheadline.weight(.semibold))
-              .foregroundStyle(.secondary)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.horizontal, 4)
           }
         }
       }

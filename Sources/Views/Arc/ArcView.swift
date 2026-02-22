@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-/// The Arc tab: Growth Chart (top) + Journey Map (bottom).
+/// The Arc tab: Devotion Anchor, Growth Chart, Journey Map, and Monthly Insights.
 struct ArcView: View {
   @Query(sort: \DevotionAnchor.createdAt, order: .reverse)
   private var anchors: [DevotionAnchor]
@@ -12,25 +12,54 @@ struct ArcView: View {
     NavigationStack {
       ScrollView {
         VStack(spacing: 20) {
-          // Devotion anchor card
           if let anchor = currentAnchor {
             devotionCard(anchor: anchor)
           }
 
-          // Growth chart
           GlassCard {
             GrowthChartView()
           }
 
-          // Journey map
           GlassCard {
             JourneyMapView()
           }
+
+          insightsLink
         }
         .padding()
       }
       .navigationTitle("Your Arc")
+      .navigationDestination(for: String.self) { dest in
+        if dest == "insights" {
+          InsightsView()
+        }
+      }
     }
+  }
+
+  private var insightsLink: some View {
+    NavigationLink(value: "insights") {
+      GlassCard {
+        HStack {
+          Image(systemName: "chart.bar.doc.horizontal")
+            .font(.title3)
+            .foregroundStyle(.blue)
+          VStack(alignment: .leading, spacing: 2) {
+            Text("Monthly Checkpoint")
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(.primary)
+            Text("Flame trends, mood patterns, habit scores")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+          }
+          Spacer()
+          Image(systemName: "chevron.right")
+            .font(.caption)
+            .foregroundStyle(.tertiary)
+        }
+      }
+    }
+    .buttonStyle(.plain)
   }
 
   private func devotionCard(anchor: DevotionAnchor) -> some View {
