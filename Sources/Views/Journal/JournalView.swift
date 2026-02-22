@@ -6,7 +6,9 @@ struct JournalView: View {
   private var entries: [JournalEntry]
 
   @State private var showCompose = false
+  @State private var showVoiceJournal = false
   @State private var mirrorPromptText: String?
+  @State private var voicePromptText: String?
 
   /// Group entries by month-year.
   private var groupedEntries: [(String, [JournalEntry])] {
@@ -31,21 +33,23 @@ struct JournalView: View {
     NavigationStack {
       Group {
         if entries.isEmpty {
-          EmptyStateView(
-            systemImage: "book.closed",
-            title: "No Journal Entries",
-            subtitle: "Start writing to capture your thoughts and track your mood.",
-            actionTitle: "Write Entry"
-          ) {
-            showCompose = true
-          }
+          emptyState
         } else {
           entryList
         }
       }
       .navigationTitle("Journal")
       .toolbar {
-        ToolbarItem(placement: .topBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+          // Voice entry
+          Button {
+            voicePromptText = nil
+            showVoiceJournal = true
+          } label: {
+            Label("Voice Entry", systemImage: "mic.fill")
+          }
+
+          // Written entry
           Button {
             mirrorPromptText = nil
             showCompose = true
@@ -57,9 +61,26 @@ struct JournalView: View {
       .sheet(isPresented: $showCompose) {
         ComposeJournalSheet(promptText: mirrorPromptText)
       }
+      .fullScreenCover(isPresented: $showVoiceJournal) {
+        VoiceJournalView(
+          prompt: voicePromptText,
+          promptType: voicePromptText != nil ? .mirror : .free
+        )
+      }
       .navigationDestination(for: JournalEntry.self) { entry in
         JournalEntryView(entry: entry)
       }
+    }
+  }
+
+  private var emptyState: some View {
+    EmptyStateView(
+      systemImage: "book.closed",
+      title: "No Journal Entries",
+      subtitle: "Write or speak to capture your thoughts.",
+      actionTitle: "Voice Entry"
+    ) {
+      showVoiceJournal = true
     }
   }
 
@@ -68,8 +89,8 @@ struct JournalView: View {
       LazyVStack(spacing: 16) {
         // Weekly Mirror Prompt
         MirrorPromptCard { prompt in
-          mirrorPromptText = prompt
-          showCompose = true
+          voicePromptText = prompt
+          showVoiceJournal = true
         }
 
         ForEach(groupedEntries, id: \.0) { month, monthEntries in

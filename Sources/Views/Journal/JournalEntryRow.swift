@@ -23,6 +23,11 @@ struct JournalEntryRow: View {
               .lineLimit(1)
           }
 
+          // Prompt type badge
+          if entry.promptType != .free {
+            promptBadge
+          }
+
           Spacer()
 
           Text(entry.date.formatted(.dateTime.month(.abbreviated).day()))
@@ -41,6 +46,24 @@ struct JournalEntryRow: View {
     .padding()
     .adaptiveGlass()
     .accessibilityElement(children: .combine)
-    .accessibilityLabel("\(entry.mood.label) mood. \(entry.title). \(entry.snippet)")
+    .accessibilityLabel(
+      "\(entry.mood.label) mood. \(entry.title). \(entry.snippet)"
+    )
+  }
+
+  private var promptBadge: some View {
+    HStack(spacing: 3) {
+      Image(systemName: entry.promptType == .mirror ? "mic.fill" : entry.promptType.systemImage)
+        .font(.caption2)
+      Text(entry.promptType.label)
+        .font(.caption2)
+    }
+    .foregroundStyle(.purple)
+    .padding(.horizontal, 6)
+    .padding(.vertical, 2)
+    .background {
+      Capsule(style: .continuous)
+        .fill(Color.purple.opacity(0.12))
+    }
   }
 }

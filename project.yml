@@ -38,6 +38,8 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_CFBundleDisplayName: "The Arc"
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: "The Arc uses your microphone for voice journaling. Your voice stays on your phone — always."
+        INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "The Arc transcribes your voice entries on-device for your journal. No audio leaves your phone."
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     postBuildScripts:
