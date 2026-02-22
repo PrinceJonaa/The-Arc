@@ -11,6 +11,9 @@ struct TheArcApp: App {
       Habit.self,
       DailyLog.self,
       JournalEntry.self,
+      FlameCheckIn.self,
+      DevotionAnchor.self,
+      UserProfile.self,
     ])
   }
 }

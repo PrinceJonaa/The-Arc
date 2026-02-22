@@ -39,27 +39,24 @@ struct TodayView: View {
       ScrollView {
         VStack(spacing: 16) {
           // Greeting
-          HStack {
-            VStack(alignment: .leading, spacing: 4) {
-              Text(greeting)
-                .font(.largeTitle.weight(.bold))
-                .foregroundStyle(.primary)
+          greetingHeader
 
-              Text(Date.now.formatted(.dateTime.weekday(.wide).month(.wide).day()))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            }
-            Spacer()
-          }
-          .padding(.bottom, 4)
+          // FounderSelf: Daily Flame Check-In
+          FlameCheckInCard()
 
+          // FounderSelf: Daily Intention + Reflection Prompt
+          DailyIntentionCard()
+
+          // Existing: Habit progress
           HabitProgressCard(habits: habits)
 
+          // Existing: Journal prompt
           JournalPromptCard(
             todayEntry: todayEntry,
             onCompose: { showComposeJournal = true }
           )
 
+          // Existing: Weekly stats
           StatsCard(
             habits: habits,
             journalEntryCount: thisWeekEntryCount
@@ -74,9 +71,28 @@ struct TodayView: View {
       }
     }
   }
+
+  private var greetingHeader: some View {
+    HStack {
+      VStack(alignment: .leading, spacing: 4) {
+        Text(greeting)
+          .font(.largeTitle.weight(.bold))
+          .foregroundStyle(.primary)
+
+        Text(Date.now.formatted(.dateTime.weekday(.wide).month(.wide).day()))
+          .font(.subheadline)
+          .foregroundStyle(.secondary)
+      }
+      Spacer()
+    }
+    .padding(.bottom, 4)
+  }
 }
 
 #Preview {
   TodayView()
-    .modelContainer(for: [Habit.self, DailyLog.self, JournalEntry.self], inMemory: true)
+    .modelContainer(
+      for: [Habit.self, DailyLog.self, JournalEntry.self, FlameCheckIn.self],
+      inMemory: true
+    )
 }

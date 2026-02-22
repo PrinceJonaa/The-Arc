@@ -6,6 +6,7 @@ struct JournalView: View {
   private var entries: [JournalEntry]
 
   @State private var showCompose = false
+  @State private var mirrorPromptText: String?
 
   /// Group entries by month-year.
   private var groupedEntries: [(String, [JournalEntry])] {
@@ -39,33 +40,14 @@ struct JournalView: View {
             showCompose = true
           }
         } else {
-          ScrollView {
-            LazyVStack(spacing: 16) {
-              ForEach(groupedEntries, id: \.0) { month, monthEntries in
-                Section {
-                  ForEach(monthEntries) { entry in
-                    NavigationLink(value: entry) {
-                      JournalEntryRow(entry: entry)
-                    }
-                    .buttonStyle(.plain)
-                  }
-                } header: {
-                  Text(month)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 4)
-                }
-              }
-            }
-            .padding()
-          }
+          entryList
         }
       }
       .navigationTitle("Journal")
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
+            mirrorPromptText = nil
             showCompose = true
           } label: {
             Label("New Entry", systemImage: "plus")
@@ -73,11 +55,41 @@ struct JournalView: View {
         }
       }
       .sheet(isPresented: $showCompose) {
-        ComposeJournalSheet()
+        ComposeJournalSheet(promptText: mirrorPromptText)
       }
       .navigationDestination(for: JournalEntry.self) { entry in
         JournalEntryView(entry: entry)
       }
+    }
+  }
+
+  private var entryList: some View {
+    ScrollView {
+      LazyVStack(spacing: 16) {
+        // Weekly Mirror Prompt
+        MirrorPromptCard { prompt in
+          mirrorPromptText = prompt
+          showCompose = true
+        }
+
+        ForEach(groupedEntries, id: \.0) { month, monthEntries in
+          Section {
+            ForEach(monthEntries) { entry in
+              NavigationLink(value: entry) {
+                JournalEntryRow(entry: entry)
+              }
+              .buttonStyle(.plain)
+            }
+          } header: {
+            Text(month)
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(.secondary)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .padding(.horizontal, 4)
+          }
+        }
+      }
+      .padding()
     }
   }
 }

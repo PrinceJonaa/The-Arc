@@ -6,6 +6,7 @@ struct ComposeJournalSheet: View {
   @Environment(\.dismiss) private var dismiss
 
   var existingEntry: JournalEntry?
+  var promptText: String?
 
   @State private var title = ""
   @State private var entryBody = ""
@@ -13,6 +14,7 @@ struct ComposeJournalSheet: View {
   @State private var date: Date = .now
 
   private var isEditing: Bool { existingEntry != nil }
+  private var isMirrorPrompt: Bool { promptText != nil }
 
   var body: some View {
     NavigationStack {
@@ -20,6 +22,15 @@ struct ComposeJournalSheet: View {
         Section("How are you feeling?") {
           MoodPicker(selected: $mood)
             .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+        }
+
+        if let prompt = promptText {
+          Section("Prompt") {
+            Text(prompt)
+              .font(.subheadline)
+              .foregroundStyle(.secondary)
+              .italic()
+          }
         }
 
         Section("Title") {
@@ -31,13 +42,15 @@ struct ComposeJournalSheet: View {
             .frame(minHeight: 200)
         }
 
-        if !isEditing {
+        if !isEditing && !isMirrorPrompt {
           Section("Date") {
             DatePicker("Entry Date", selection: $date, displayedComponents: .date)
           }
         }
       }
-      .navigationTitle(isEditing ? "Edit Entry" : "New Entry")
+      .navigationTitle(
+        isEditing ? "Edit Entry" : (isMirrorPrompt ? "Mirror Reflection" : "New Entry")
+      )
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
@@ -63,6 +76,8 @@ struct ComposeJournalSheet: View {
   }
 
   private func save() {
+    let promptType: PromptType = isMirrorPrompt ? .mirror : .free
+
     if let entry = existingEntry {
       entry.title = title.trimmingCharacters(in: .whitespaces)
       entry.body = entryBody
@@ -73,6 +88,8 @@ struct ComposeJournalSheet: View {
         title: title.trimmingCharacters(in: .whitespaces),
         body: entryBody,
         mood: mood,
+        promptType: promptType,
+        promptText: promptText ?? "",
         date: date
       )
       modelContext.insert(entry)
