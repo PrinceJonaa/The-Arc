@@ -5,11 +5,19 @@ struct ContentView: View {
 
   var body: some View {
     TabView(selection: $selectedTab) {
-      Tab("Home", systemImage: "house.fill", value: 0) {
-        HomeView()
+      Tab("Today", systemImage: "sun.max.fill", value: 0) {
+        TodayView()
       }
 
-      Tab("Settings", systemImage: "gearshape.fill", value: 1) {
+      Tab("Habits", systemImage: "checkmark.circle.fill", value: 1) {
+        HabitsView()
+      }
+
+      Tab("Journal", systemImage: "book.fill", value: 2) {
+        JournalView()
+      }
+
+      Tab("Settings", systemImage: "gearshape.fill", value: 3) {
         SettingsView()
       }
     }
@@ -18,4 +26,5 @@ struct ContentView: View {
 
 #Preview {
   ContentView()
+    .modelContainer(for: [Habit.self, DailyLog.self, JournalEntry.self], inMemory: true)
 }
