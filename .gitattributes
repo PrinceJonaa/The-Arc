@@ -1,0 +1,11 @@
+# Merge-safe whiteboard for concurrent agent writes
+PROJECT_WHITEBOARD.md merge=union
+
+# Swift sources
+*.swift text diff=swift
+
+# Ensure consistent line endings
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
