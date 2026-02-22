@@ -1,6 +1,6 @@
 # The Arc — Living Project Whiteboard
 
-Last verified: 2026-02-22T14:50:00Z
+Last verified: 2026-02-22T16:00:00Z
 Status: Active source of truth for engineering and operations
 
 ## Purpose
@@ -296,6 +296,7 @@ Auto-generated from `Async Run Event Log`. Do not edit rows manually.
 | CORE-001 | Core features (habits, journal, dashboard) | sprinter | high | done | 2026-02-22 | 4-tab layout, SwiftData models |
 | VISION-001 | FounderSelf Phase 1 integration | sprinter | high | done | 2026-02-22 | 14 new files, 6 modified |
 | VOICE-001 | Voice journal layer | sprinter | high | done | 2026-02-22 | On-device speech, immersive UX |
+| PHASE2-001 | Phase 2: Insights, search, notifications | sprinter | high | done | 2026-02-22 | 6 new files, +943 lines |
 <!-- GENERATED_TASK_BOARD_END -->
 
 ## Role Run Ledger (Auto-Generated Snapshot)
@@ -305,6 +306,7 @@ Auto-generated from `Async Run Event Log` (latest first). Do not edit rows manua
 <!-- GENERATED_RUN_LEDGER_START -->
 | Timestamp (UTC) | Role | Task ID | Summary | Validation | Next Step |
 |---|---|---|---|---|---|
+| 2026-02-22T21:00:00Z | sprinter | PHASE2-001 | Insights dashboard, journal search, notifications | swiftlint 0/51; xcodebuild BUILD SUCCEEDED | Phase 3 features |
 | 2026-02-22T19:50:00Z | sprinter | VOICE-001 | Voice journal layer: VoiceJournalEngine, PromptSpeaker, WaveformView, RecordButton, VoiceJournalView | swiftlint 0/45; xcodebuild BUILD SUCCEEDED | Phase 2 features |
 | 2026-02-22T19:10:00Z | sprinter | VISION-001 | FounderSelf Phase 1: flame check-in, arc phases, growth chart, journey map, onboarding, mirror prompts | swiftlint 0/40; xcodebuild BUILD SUCCEEDED | Voice layer |
 | 2026-02-22T18:30:00Z | sprinter | CORE-001 | Core features: habits, journal, dashboard, glass components, SwiftData | swiftlint 0/25; xcodebuild BUILD SUCCEEDED | FounderSelf integration |
@@ -347,6 +349,8 @@ This is the concurrency-safe whiteboard write target for multi-agent/PR workflow
 ### Slot 04
 | Event ID | Timestamp (UTC) | Role | Task ID | Task Status | Summary | Validation | Next Step | Change Note |
 |---|---|---|---|---|---|---|---|---|
+
+| 2026-02-22T21:00:00Z-sprinter-PHASE2-001 | 2026-02-22T21:00:00Z | sprinter | PHASE2-001 | done | Phase 2: InsightsEngine (analytics), InsightsView (dashboard with period picker, flame summary, mood donut, habit scorecard, journal stats), FlameStreakCard, MoodRingChart, HabitScorecardView, NotificationManager (morning/evening reminders), journal .searchable(), ArcView Monthly Checkpoint link, SettingsView notification toggles | xcodegen; swiftlint 0/51; xcodebuild BUILD SUCCEEDED | Phase 3 features | +943 lines, 6 new files, 3 modified |
 
 ### Slot 05
 | Event ID | Timestamp (UTC) | Role | Task ID | Task Status | Summary | Validation | Next Step | Change Note |
