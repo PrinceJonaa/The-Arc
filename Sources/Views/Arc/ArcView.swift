@@ -25,13 +25,19 @@ struct ArcView: View {
           }
 
           insightsLink
+          aiInsightsLink
         }
         .padding()
       }
       .navigationTitle("Your Arc")
       .navigationDestination(for: String.self) { dest in
-        if dest == "insights" {
+        switch dest {
+        case "insights":
           InsightsView()
+        case "ai-insights":
+          AIInsightsView()
+        default:
+          EmptyView()
         }
       }
     }
@@ -49,6 +55,31 @@ struct ArcView: View {
               .font(.subheadline.weight(.semibold))
               .foregroundStyle(.primary)
             Text("Flame trends, mood patterns, habit scores")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+          }
+          Spacer()
+          Image(systemName: "chevron.right")
+            .font(.caption)
+            .foregroundStyle(.tertiary)
+        }
+      }
+    }
+    .buttonStyle(.plain)
+  }
+
+  private var aiInsightsLink: some View {
+    NavigationLink(value: "ai-insights") {
+      GlassCard {
+        HStack {
+          Image(systemName: "brain.head.profile.fill")
+            .font(.title3)
+            .foregroundStyle(.purple)
+          VStack(alignment: .leading, spacing: 2) {
+            Text("AI Pattern & Drift Detection")
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(.primary)
+            Text("Powered by Apple Intelligence — on-device")
               .font(.caption)
               .foregroundStyle(.secondary)
           }
