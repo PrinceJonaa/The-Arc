@@ -15,6 +15,7 @@ struct SettingsView: View {
   @State private var showClearConfirm = false
   @State private var showEditAnchor = false
   @State private var editedAnchorText = ""
+  @State private var showRecalibration = false
 
   private var profile: UserProfile? { profiles.first }
   private var anchor: DevotionAnchor? { anchors.first }
@@ -104,7 +105,31 @@ struct SettingsView: View {
           }
           .pickerStyle(.menu)
         }
+
+        // Recalibrate
+        Button {
+          showRecalibration = true
+        } label: {
+          HStack {
+            Label("Recalibrate Voice", systemImage: "waveform.path.ecg")
+            Spacer()
+            if profile.needsRecalibration {
+              Text("Due")
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.purple)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 3)
+                .background {
+                  Capsule(style: .continuous)
+                    .fill(Color.purple.opacity(0.12))
+                }
+            }
+          }
+        }
       }
+    }
+    .sheet(isPresented: $showRecalibration) {
+      RecalibrationView()
     }
   }
 

@@ -11,7 +11,12 @@ struct TodayView: View {
   @Query(sort: \JournalEntry.date, order: .reverse)
   private var journalEntries: [JournalEntry]
 
+  @Query private var profiles: [UserProfile]
+
   @State private var showComposeJournal = false
+  @State private var showRecalibration = false
+
+  private var profile: UserProfile? { profiles.first }
 
   private var greeting: String {
     let hour = Calendar.current.component(.hour, from: .now)
@@ -38,25 +43,20 @@ struct TodayView: View {
     NavigationStack {
       ScrollView {
         VStack(spacing: 16) {
-          // Greeting
           greetingHeader
 
-          // FounderSelf: Daily Flame Check-In
+          // 30-day recalibration banner
+          if profile?.needsRecalibration == true {
+            recalibrationBanner
+          }
+
           FlameCheckInCard()
-
-          // FounderSelf: Daily Intention + Reflection Prompt
           DailyIntentionCard()
-
-          // Existing: Habit progress
           HabitProgressCard(habits: habits)
-
-          // Existing: Journal prompt
           JournalPromptCard(
             todayEntry: todayEntry,
             onCompose: { showComposeJournal = true }
           )
-
-          // Existing: Weekly stats
           StatsCard(
             habits: habits,
             journalEntryCount: thisWeekEntryCount
@@ -68,6 +68,9 @@ struct TodayView: View {
       .navigationBarTitleDisplayMode(.inline)
       .sheet(isPresented: $showComposeJournal) {
         ComposeJournalSheet(existingEntry: todayEntry)
+      }
+      .sheet(isPresented: $showRecalibration) {
+        RecalibrationView()
       }
     }
   }
@@ -87,12 +90,42 @@ struct TodayView: View {
     }
     .padding(.bottom, 4)
   }
+
+  private var recalibrationBanner: some View {
+    Button {
+      showRecalibration = true
+    } label: {
+      GlassCard {
+        HStack(spacing: 12) {
+          Image(systemName: "waveform.path.ecg")
+            .font(.title3)
+            .foregroundStyle(.purple)
+          VStack(alignment: .leading, spacing: 2) {
+            Text("Voice Check-In")
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(.primary)
+            Text("Your 30-day recalibration is ready")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+          }
+          Spacer()
+          Image(systemName: "chevron.right")
+            .font(.caption)
+            .foregroundStyle(.tertiary)
+        }
+      }
+    }
+    .buttonStyle(.plain)
+  }
 }
 
 #Preview {
   TodayView()
     .modelContainer(
-      for: [Habit.self, DailyLog.self, JournalEntry.self, FlameCheckIn.self],
+      for: [
+        Habit.self, DailyLog.self, JournalEntry.self,
+        FlameCheckIn.self, UserProfile.self,
+      ],
       inMemory: true
     )
 }

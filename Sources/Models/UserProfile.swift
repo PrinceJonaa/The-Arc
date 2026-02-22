@@ -55,6 +55,7 @@ final class UserProfile {
   var tenYearCalling: String
   var personalityToneRaw: String
   var onboardingCompletedAt: Date?
+  var lastCalibratedAt: Date?
 
   init(
     currentPhase: ArcPhase = .ignition,
@@ -66,6 +67,7 @@ final class UserProfile {
     self.tenYearCalling = ""
     self.personalityToneRaw = personalityTone.rawValue
     self.onboardingCompletedAt = nil
+    self.lastCalibratedAt = nil
   }
 
   var currentPhase: ArcPhase {
@@ -80,5 +82,16 @@ final class UserProfile {
 
   var hasCompletedOnboarding: Bool {
     onboardingCompletedAt != nil
+  }
+
+  /// Whether 30+ days have passed since last calibration.
+  var needsRecalibration: Bool {
+    guard hasCompletedOnboarding else { return false }
+    let anchor = lastCalibratedAt ?? onboardingCompletedAt ?? .now
+    let daysSince =
+      Calendar.current.dateComponents(
+        [.day], from: anchor, to: .now
+      ).day ?? 0
+    return daysSince >= 30
   }
 }
