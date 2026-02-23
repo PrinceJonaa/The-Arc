@@ -14,8 +14,11 @@ import Foundation
     var title: String
 
     @Guide(
-      description: "Which area this pattern relates to",
-      .anyOf(["emotional", "behavioral", "relational", "creative", "energy"])
+      description: "Which Unfolding Lattice law this pattern maps to",
+      .anyOf([
+        "arc_phase", "drift", "crest", "fracture",
+        "loop", "fade", "threshold", "resonance",
+      ])
     )
     var category: String
 
@@ -38,29 +41,38 @@ import Foundation
     )
     var alignment: String
 
-    @Guide(description: "A single sentence naming the core tension or harmony detected")
+    @Guide(
+      description: "A single sentence naming the core tension or harmony, using lattice vocabulary")
     var headline: String
 
-    @Guide(description: "2-3 sentences explaining the drift or alignment with specifics")
+    @Guide(
+      description:
+        "2-3 sentences explaining drift/alignment. Name active distortion lenses and their virtuous twins."
+    )
     var explanation: String
 
-    @Guide(description: "One concrete, actionable thing to do this week")
+    @Guide(
+      description:
+        "One actionable step using lattice vocabulary, e.g. inject micro-Θ, bind δ to λ, apply φ⊗ rebind"
+    )
     var suggestion: String
   }
 
   @available(iOS 26.0, *)
   @Generable
   struct WeeklyRecapOutput: Sendable {
-    @Guide(description: "An encouraging 1-line summary of the week, grounded in data")
+    @Guide(
+      description: "1-line summary grounded in flame average, arc phase (Φ₀-Φ₄), and habit rhythm")
     var headline: String
 
-    @Guide(description: "The single most important positive pattern this week")
+    @Guide(description: "The week's strongest Ω-face pattern — name the lattice law")
     var win: String
 
-    @Guide(description: "The single most important area to watch or improve")
+    @Guide(description: "The week's ∞_B-face signal — name the distortion lens if applicable")
     var watchArea: String
 
-    @Guide(description: "A motivational closing line referencing the user's devotion anchor")
+    @Guide(
+      description: "A glyph-like closing: compressed, resonant, referencing the devotion anchor")
     var closing: String
   }
 #endif
@@ -85,11 +97,14 @@ struct PatternResult: Identifiable, Sendable {
 
   var categoryEmoji: String {
     switch category {
-    case "emotional": "💫"
-    case "behavioral": "⚡"
-    case "relational": "🤝"
-    case "creative": "🎨"
-    case "energy": "🔥"
+    case "arc_phase": "🌀"  // 𝒰 Becoming
+    case "drift": "〰️"  // δ drift wave
+    case "crest": "🏔️"  // κ peak
+    case "fracture": "⚡"  // Δ break
+    case "loop": "🔄"  // λ cycle
+    case "fade": "🌅"  // ϝ dissolution
+    case "threshold": "🚪"  // Θ gate
+    case "resonance": "🎵"  // ℜ harmony
     default: "📊"
     }
   }
