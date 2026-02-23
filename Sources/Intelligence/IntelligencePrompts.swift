@@ -34,12 +34,18 @@ extension IntelligenceManager {
     PATTERN CATEGORIES (internal labels):
     arc_phase, drift, crest, fracture, loop, fade, threshold, resonance
 
-    OUTPUT RULES — THIS IS CRITICAL:
-    - NEVER use lattice symbols (δ, λ, Θ, Σ, ϝ, Ω, ∞_B, etc.) in output.
-    - NEVER use framework vocabulary (Unfolding Lattice, Distortion Lens, etc.).
-    - Write like a warm, wise friend — someone who sees deeply but speaks simply.
+    OUTPUT VOICE:
+    - Write like a warm, wise friend who lives this framework naturally.
+    - You CAN use concepts like "drift," "threshold," "mastery loop," \
+      "dissolution" — but always make the meaning clear from context.
+    - Don't use raw symbols (δ, λ, Θ, Σ, ∞_B, etc.) — those are too compressed.
+    - Don't name-drop framework titles ("Unfolding Lattice," "Distortion Lens").
+    - If a concept has a name worth sharing, explain it: \
+      e.g., "This looks like a drift — where motion builds but hasn't found \
+      direction yet" or "You might be at a threshold — one of those moments \
+      where something is asking you to choose."
     - Ground every observation in the user's actual data. No fabrication.
-    - Name what's healthy AND what to watch, but in plain everyday language.
+    - Name what's healthy AND what to watch for.
     - Keep titles short and evocative. Observations 1-2 sentences max.
     """
   }
@@ -75,16 +81,18 @@ extension IntelligenceManager {
     - "drifting" = some disconnect; flame trending down; anchor absent from reflections
     - "misaligned" = clear gap; flame low; journals show controlling or avoidant patterns
 
-    OUTPUT RULES — THIS IS CRITICAL:
-    - NEVER use framework terms (distortion lens, Seizure, Idol Mask, etc.).
-    - NEVER use lattice symbols or compressed notation.
+    OUTPUT VOICE:
     - Write like a caring coach who has known them for years.
+    - You CAN use concepts like "anchor," "drift," "devotion," "witness" — \
+      but explain them naturally, not as jargon.
+    - Don't use raw symbols or name-drop framework titles.
     - Be compassionate. Frame drift as "a direction that can shift," not a failure.
-    - Name what's going well in plain terms.
-    - If something is off, describe the behavior pattern simply — \
-      e.g., "You're tracking a lot but not stopping to feel it" instead of \
-      "Surveillance lens active."
-    - Give one simple, concrete suggestion anyone could understand.
+    - Name what's going well. Be specific.
+    - If something is off, describe the pattern and the healthier version: \
+      e.g., "You're tracking a lot but not stopping to feel what the numbers \
+      mean — tracking works best when it brings you closer, not when it \
+      replaces the real thing."
+    - Give one concrete suggestion that explains why it helps.
     """
   }
 
@@ -100,9 +108,12 @@ extension IntelligenceManager {
       What's fading? Are their habits mastery or routine?
     - Reference their Devotion Anchor as their north star.
 
-    OUTPUT RULES — THIS IS CRITICAL:
-    - NEVER use technical terms, framework names, or lattice symbols.
+    OUTPUT VOICE:
     - Write like a letter from a wise mentor who cares about them.
+    - You CAN reference concepts naturally — "your rhythm held," \
+      "something is dissolving," "a threshold is coming" — \
+      but always so the meaning lands without a glossary.
+    - Don't use raw symbols or framework titles.
     - headline: One warm, grounded sentence about their week.
     - win: Their biggest positive moment — specific, not generic.
     - watchArea: One thing to keep an eye on — honest but gentle.
@@ -231,41 +242,41 @@ extension IntelligenceManager {
   }
 }
 
-// MARK: - Mock Data (Warm + Simple)
+// MARK: - Mock Data (Balanced Voice)
 
 extension IntelligenceManager {
   func mockPatterns() -> [PatternResult] {
     [
       PatternResult(
-        title: "Morning clarity, evening doubt",
+        title: "Morning clarity, evening drift",
         category: "drift",
         observation: """
-          Your flame scores run higher before noon. Journal entries \
-          after 8 PM carry more uncertainty. This is natural — your \
-          mornings are your power window. Protect them. If the evenings \
-          start dragging you down, a small wind-down ritual could help.
+          Your flame scores run higher before noon. After 8 PM, your \
+          journal entries carry more doubt. There's a drift happening \
+          in the evenings — not bad, just motion without direction. \
+          A small wind-down ritual could turn that fade into rest.
           """,
         strength: "strong"
       ),
       PatternResult(
-        title: "Consistency is building something",
+        title: "Your rhythm is becoming a mastery loop",
         category: "loop",
         observation: """
-          Weeks where you hit 4+ habits line up with flame scores \
-          above 7. The routine isn't just routine — it's deepening. \
-          You're more present each time, not less. That's the sign \
-          it's working. Just check in: does it still feel chosen?
+          Weeks where you hit 4+ habits line up with flame scores above 7. \
+          That's a mastery loop — a rhythm that deepens each time instead \
+          of flattening into autopilot. You're more present with it, not \
+          less. Just keep checking: does it still feel chosen?
           """,
         strength: "emerging"
       ),
       PatternResult(
-        title: "Something is ready to shift",
+        title: "A threshold is building",
         category: "threshold",
         observation: """
-          Your flame has held steady near 7 for several days. That \
-          kind of plateau usually means something is building under \
-          the surface — a breakthrough or a decision that's been waiting. \
-          Pay attention to what keeps coming up in your journal.
+          Your flame has held near 7 for several days. That plateau usually \
+          means you're approaching a threshold — one of those moments where \
+          something under the surface is asking you to choose. Pay attention \
+          to what keeps coming up in your journal.
           """,
         strength: "emerging"
       ),
@@ -275,35 +286,36 @@ extension IntelligenceManager {
   func mockDrift() -> DriftResult {
     DriftResult(
       alignment: "aligned",
-      headline: "Your actions match your words this week.",
+      headline: "Your actions match your anchor this week.",
       explanation: """
-        Your journal entries reflect the same things your anchor \
+        Your journal entries reflect the same things your devotion anchor \
         is about — growth and showing up with presence. Flame scores \
         are holding steady, which means you're not just going through \
-        the motions. You're actually here for it. Your habits are \
-        supporting the bigger picture, not replacing it.
+        the motions. Your habits are supporting the bigger picture, not \
+        replacing it. That's stewardship — holding what matters without \
+        gripping it.
         """,
       suggestion: """
-        Take five minutes this weekend to write down one thing you \
-        learned this week. Not a lesson — just something you noticed. \
-        That small act turns a good week into something you can build on.
+        Take five minutes this weekend to write down one thing you noticed \
+        this week. Not a lesson — just an observation. That small act turns \
+        a good week into a trace you can build on.
         """
     )
   }
 
   func mockRecap() -> RecapResult {
     RecapResult(
-      headline: "Steady week — your flame averaged 7.2 and your habits held strong.",
+      headline: "Steady week — your flame averaged 7.2 and your rhythm held.",
       win: """
-        You journaled 5 out of 7 days. That's your most consistent \
-        week yet. And the entries got deeper as the week went on — \
-        that's not just discipline, that's real growth.
+        You journaled 5 out of 7 days — your most consistent week yet. \
+        And the entries got deeper as the week went on. That's not just \
+        discipline, that's a loop becoming mastery.
         """,
       watchArea: """
-        Your flame dips in the evenings. That's normal fatigue, but \
-        if it keeps up, it could start to feel like a pattern you're \
-        stuck in. A simple wind-down — even just 5 minutes of quiet — \
-        could turn those dips into intentional rest instead of drift.
+        Your flame dips in the evenings. That's natural, but if it keeps \
+        up it could harden into a drift — where the fatigue starts feeling \
+        like identity instead of just tiredness. A wind-down ritual, even \
+        5 minutes of quiet, turns that fade into intentional rest.
         """,
       closing: "You said you'd build this. You're building it. Keep going."
     )
