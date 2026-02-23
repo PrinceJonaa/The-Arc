@@ -16,6 +16,8 @@ struct VoiceJournalView: View {
   @State private var showPermissionAlert = false
   @State private var mood: Mood = .okay
   @State private var showMoodPicker = false
+  @State private var shouldOrganize = false
+  @State private var isOrganizing = false
 
   /// Optional prompt for guided reflection.
   var prompt: String?
@@ -231,6 +233,35 @@ struct VoiceJournalView: View {
 
         MoodPicker(selected: $mood)
 
+        // Organize with AI toggle
+        VStack(spacing: 8) {
+          Toggle(isOn: $shouldOrganize) {
+            HStack(spacing: 10) {
+              Image(systemName: "wand.and.stars")
+                .foregroundStyle(.purple)
+              VStack(alignment: .leading, spacing: 2) {
+                Text("Organize with AI")
+                  .font(.subheadline.weight(.medium))
+                Text("Clean up and paragraph your thoughts")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
+          }
+          .tint(.purple)
+        }
+        .padding(.horizontal, 4)
+
+        if isOrganizing {
+          HStack(spacing: 10) {
+            ProgressView()
+            Text("Organizing your thoughts…")
+              .font(.subheadline)
+              .foregroundStyle(.secondary)
+          }
+          .padding(.top, 8)
+        }
+
         Spacer()
       }
       .padding(24)
@@ -239,11 +270,12 @@ struct VoiceJournalView: View {
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") {
-            saveEntry()
-            showMoodPicker = false
-            dismiss()
+            Task {
+              await saveEntryFlow()
+            }
           }
           .fontWeight(.semibold)
+          .disabled(isOrganizing)
         }
       }
     }
@@ -273,9 +305,15 @@ struct VoiceJournalView: View {
     }
   }
 
-  private func saveEntry() {
-    let transcript = engine.liveTranscript.trimmingCharacters(in: .whitespacesAndNewlines)
+  private func saveEntryFlow() async {
+    var transcript = engine.liveTranscript.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !transcript.isEmpty else { return }
+
+    if shouldOrganize {
+      isOrganizing = true
+      transcript = await engine.organizeTranscript(transcript)
+      isOrganizing = false
+    }
 
     let entry = JournalEntry(
       title: prompt != nil ? "Voice Reflection" : "Voice Entry",
@@ -285,5 +323,7 @@ struct VoiceJournalView: View {
       promptText: prompt ?? ""
     )
     modelContext.insert(entry)
+    showMoodPicker = false
+    dismiss()
   }
 }

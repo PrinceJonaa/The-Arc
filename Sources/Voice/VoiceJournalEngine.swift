@@ -2,6 +2,10 @@
 import Foundation
 @preconcurrency import Speech
 
+#if canImport(FoundationModels)
+  import FoundationModels
+#endif
+
 /// On-device speech recognition engine powering the voice journal.
 /// All recognition is on-device — no audio leaves the phone.
 @MainActor
@@ -99,5 +103,67 @@ final class VoiceJournalEngine: ObservableObject {
     Task { @MainActor [weak self] in
       self?.audioLevel = level
     }
+  }
+
+  // MARK: - AI Organize
+
+  /// Takes raw stream-of-consciousness transcript and organizes it
+  /// into clear paragraphs, fixing filler words and run-ons.
+  func organizeTranscript(_ raw: String) async -> String {
+    guard !raw.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+      return raw
+    }
+
+    #if canImport(FoundationModels)
+      if #available(iOS 26.0, *) {
+        do {
+          let session = LanguageModelSession(
+            instructions: """
+              You clean up voice journal transcripts. The user spoke freely \
+              and wants their thoughts organized.
+
+              RULES:
+              - Keep their exact words and voice — don't rewrite, just restructure.
+              - Break into natural paragraphs by topic shift.
+              - Remove filler words (um, uh, like, you know) only if excessive.
+              - Fix obvious speech-to-text errors where meaning is clear.
+              - Don't add anything they didn't say.
+              - Don't summarize — keep the full thought.
+              - Return ONLY the cleaned transcript, no commentary.
+              """
+          )
+
+          let result = try await session.respond(
+            to: "Clean up this voice journal transcript:\n\n\(raw)"
+          )
+          return result.content
+        } catch {
+          return basicOrganize(raw)
+        }
+      }
+    #endif
+
+    return basicOrganize(raw)
+  }
+
+  /// Simple paragraph splitting for non-AI fallback.
+  private func basicOrganize(_ text: String) -> String {
+    let sentences = text.components(separatedBy: ". ")
+    var paragraphs: [String] = []
+    var current: [String] = []
+
+    for sentence in sentences {
+      current.append(sentence)
+      if current.count >= 3 {
+        paragraphs.append(current.joined(separator: ". ") + ".")
+        current = []
+      }
+    }
+    if !current.isEmpty {
+      let last = current.joined(separator: ". ")
+      paragraphs.append(last.hasSuffix(".") ? last : last + ".")
+    }
+
+    return paragraphs.joined(separator: "\n\n")
   }
 }
