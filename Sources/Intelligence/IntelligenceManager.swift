@@ -14,7 +14,7 @@ import Foundation
     var title: String
 
     @Guide(
-      description: "Which Unfolding Lattice law this pattern maps to",
+      description: "Internal category for pattern type",
       .anyOf([
         "arc_phase", "drift", "crest", "fracture",
         "loop", "fade", "threshold", "resonance",
@@ -22,7 +22,7 @@ import Foundation
     )
     var category: String
 
-    @Guide(description: "A 1-2 sentence observation about what the pattern reveals")
+    @Guide(description: "A warm 1-2 sentence observation in plain language, no technical terms")
     var observation: String
 
     @Guide(
@@ -42,18 +42,18 @@ import Foundation
     var alignment: String
 
     @Guide(
-      description: "A single sentence naming the core tension or harmony, using lattice vocabulary")
+      description: "A single warm sentence naming the core tension or harmony, in plain language")
     var headline: String
 
     @Guide(
       description:
-        "2-3 sentences explaining drift/alignment. Name active distortion lenses and their virtuous twins."
+        "2-3 sentences in plain language explaining what's aligned or off. No technical terms."
     )
     var explanation: String
 
     @Guide(
       description:
-        "One actionable step using lattice vocabulary, e.g. inject micro-Θ, bind δ to λ, apply φ⊗ rebind"
+        "One simple, concrete action anyone could understand"
     )
     var suggestion: String
   }
@@ -61,18 +61,18 @@ import Foundation
   @available(iOS 26.0, *)
   @Generable
   struct WeeklyRecapOutput: Sendable {
-    @Guide(
-      description: "1-line summary grounded in flame average, arc phase (Φ₀-Φ₄), and habit rhythm")
+    @Guide(description: "1-line warm summary of the week using their actual numbers")
     var headline: String
 
-    @Guide(description: "The week's strongest Ω-face pattern — name the lattice law")
+    @Guide(description: "The week's biggest positive moment in plain language")
     var win: String
 
-    @Guide(description: "The week's ∞_B-face signal — name the distortion lens if applicable")
+    @Guide(description: "One thing to watch in plain, honest language")
     var watchArea: String
 
     @Guide(
-      description: "A glyph-like closing: compressed, resonant, referencing the devotion anchor")
+      description:
+        "A short, memorable closing that echoes their anchor, like texting a close friend")
     var closing: String
   }
 #endif
